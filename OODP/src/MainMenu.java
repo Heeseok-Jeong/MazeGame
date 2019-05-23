@@ -1,4 +1,3 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,31 +9,33 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/**
- *
- * @author student
- */
 public class MainMenu {
-
+	int level = 0;
     JFrame Menu = new JFrame("Maze");
     JButton Start = new JButton("Play");
     JButton Exit = new JButton("Exit");
     JButton MapMaker = new JButton("Map Maker");
-    ImageIcon picture = new ImageIcon("res/Images/MazePicture.png");
+    JButton Ranking = new JButton("Ranking");
+    ImageIcon picture = new ImageIcon("res/Images/1.png");
     JLabel imageLabel = new JLabel(picture);
     ArrayList<String> mapList = new ArrayList<String>();
-    JComboBox<String> lvlList;
+    ArrayList<String> modeList = new ArrayList<String>();
+    JComboBox<String> lvlList, modeListBox;
     int menuWidth = 100; //Width of each button/item on display
     int menuHeight = 30;//Height of each button/item on display
-    int menuY = 460; //Button/item location on display
-    int WIDTH = 490;
-    int HEIGHT = 530;
-    
+    int menuY = 395; //Button/item location on display
+    int WIDTH = 500;
+    int HEIGHT = 500;
+    MazeTimer mazeTimer;
             
 	public MainMenu() {
     	//Load map list
     	getMapList();
     	lvlList = new JComboBox<String>(mapList.toArray(new String[mapList.size()]));
+    	
+    	//add mode list
+    	modeList.add("Speed Mode");
+    	modeListBox = new JComboBox<String>(modeList.toArray(new String[modeList.size()]));
     	
         //Menu Variables
         Menu.setResizable(false);
@@ -45,41 +46,54 @@ public class MainMenu {
         
         //Start Button Variables
         Start.setSize(menuWidth,menuHeight);
-        Start.setLocation(10, menuY);
+        Start.setLocation(50, menuY);
         Menu.add(Start);
         Start.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new Maze(lvlList.getSelectedItem().toString());
+				new Maze(("Level "+level+".map").toString(), 0);
 				Menu.setVisible(false);
 			}
         	
         });	
         
-        //Map Maker Button Variables
+       //Map Maker Button Variables
         MapMaker.setSize(menuWidth,menuHeight);
-        MapMaker.setLocation(120, menuY);
+        MapMaker.setLocation(200, menuY);
         Menu.add(MapMaker);
         MapMaker.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new MazeMapMaker();
-				Menu.setVisible(false);
+				new Access();
+				Menu.setVisible(true);
 			}
-        	
+        });
+        
+      //Ranking Button Variables
+        Ranking.setSize(menuWidth,menuHeight);
+        Ranking.setLocation(350, menuY);
+        Menu.add(Ranking);
+        Ranking.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Ranking();
+				Menu.setVisible(true);
+			}
         });
         
         //Level Selector
-        lvlList.setSize(menuWidth+35, menuHeight);
+        
+/*        lvlList.setSize(menuWidth+35, menuHeight);
         lvlList.setLocation(230, menuY);
-        Menu.add(lvlList);
+        Menu.add(lvlList);*/
         
         //Exit Button Variables
         Exit.setSize(menuWidth,menuHeight);
-        Exit.setLocation(375,menuY);
-        Menu.add(Exit);
+        Exit.setLocation(250,menuY);
+       // Menu.add(Exit);
         Exit.addActionListener(new ActionListener(){
 
 			@Override
@@ -89,7 +103,7 @@ public class MainMenu {
         });
         
         //Display Picture
-        imageLabel.setBounds((WIDTH-412)/2, 25, 412, 412);
+        imageLabel.setBounds(0, 0, 500, 470);
         imageLabel.setVisible(true);
         Menu.add(imageLabel);
         Menu.setVisible(true);
